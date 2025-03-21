@@ -1,166 +1,143 @@
-<!--
-Internet connection is required to load images
--->
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>Phibi's Portfolio</title> <!-- Sets the title of the webpage displayed in the browser tab -->
-<style>
-/* Remove padding and margin for the entire HTML document */
-html {
-  padding: 0;
-  margin: 0;
-}
-
-/* Set a light gray background color for the body */
-body {
-  background-color: #EFEFEF;
-}
-
-/* Style for sections to add padding, margin, and rounded corners */
-.section {
-  background-color: #FFFFFF; /* White background for sections */
-  padding: 15px; /* Add padding inside sections */
-  margin-bottom: 10px; /* Space between sections */
-  border-radius: 10px; /* Round the corners of sections */
-}
-
-/* Style for the header section */
-#header {
-  background-image: url("https://fastly.picsum.photos/id/922/700/300.jpg?hmac=BBhiGuQvLRUra6sOsFQu4H9sDvXxiAy5OwOLYpqS2TY"); /* Add a background image */
-  background-size: cover; /* Ensure the image covers the entire area */
-}
-
-/* Style for the image inside the header */
-#header img {
-  border-radius: 50%; /* Make the image circular */
-  border: 1px solid #212121; /* Add a dark gray border */
-}
-
-/* Style for the text inside the header */
-#header p {
-  font-size: 20pt; /* Increase font size */
-  color: #EFEFEF; /* Light gray text color */
-  padding-top: 5px; /* Add padding above the text */
-  margin: 0; /* Remove default margin */
-  font-weight: bold; /* Make text bold */
-  text-align: center; /* Center the text */
-}
-
-/* Style for the progress bars */
-progress {
-  width: 80%; /* Set the width of the progress bar */
-  height: 18px; /* Set the height of the progress bar */
-  margin-left: 10%; /* Center the bar horizontally */
-  color: #3fb6b2; /* Set the color */
-  background: #efefef; /* Set a light gray background */
-  border-radius: 10px; /* Round the corners */
-}
-
-/* Style for the progress bar background in WebKit-based browsers */
-progress::-webkit-progress-bar {
-  background: #efefef; /* Light gray background for the bar */
-  border-radius: 10px; /* Round the corners */
-}
-
-/* Style for the progress bar value in WebKit-based browsers */
-progress::-webkit-progress-value {
-  background: #607D8B; /* Dark gray-blue color for the value */
-  border-radius: 10px; /* Round the corners */
-}
-
-/* Style for the language labels in the "Coding Languages" section */
-#languages p {
-  text-align: center; /* Center the text */
-  font-size: 18px; /* Set font size */
-  font-weight: bold; /* Make text bold */
-}
-
-/* Style for the form container */
-form {
-  text-align: center; /* Center the form */
-  margin-top: 0; /* Remove extra margin above the form */
-}
-
-/* Style for input fields and the textarea */
-input, textarea {
-  margin-bottom: 8px; /* Space between fields */
-  font-size: 11pt; /* Set font size */
-  padding: 10px; /* Add padding inside fields */
-  border: 1px solid #cecece; /* Light gray border */
-  background-color: #EFEFEF; /* Light gray background */
-  color: #404040; /* Dark gray text color */
-  border-radius: 10px; /* Round the corners */
-  width: 70%; /* Set the width of the fields */
-  outline: none; /* Remove focus outline */
-}
-
-/* Style for the submit button */
-.submit {
-  background-color: #607D8B; /* Dark gray-blue background */
-  border-radius: 10px; /* Round the corners */
-  color: #FFFFFF; /* White text color */
-  border: none; /* Remove border */
-  outline: none; /* Remove focus outline */
-  margin: 0; /* Remove margin */
-  font-weight: bold; /* Make text bold */
-}
-
-/* Style specifically for the textarea */
-textarea {
-  height: 80px; /* Set a fixed height */
-}
-
-/* Style for all <h2> headings */
-h2 {
-  color: #607D8B; /* Dark gray-blue text color */
-}
-</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quantum</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Faculty+Glyphic&family=Marcellus&family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Playfair+Display:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="styles.css" rel="stylesheet">
 </head>
 <body>
-<!--Header Start-->
-<div id="header" class="section" align="center" >
-<img src="img/tesst.jpeg" width="70px" >
-<p>Phibi</p>
-</div>
+    <nav class="navbar">
+        <div class="nav-content">
+            <i class="fas fa-code"></i>
+            <button class="mobile-menu-btn">
+                <i class="fas fa-bars"></i>
+            </button>
+            <div class="nav-links">
+                <a href="#about">About</a>
+                <a href="#skills">Features</a>
+                <a href="#projects">Map</a>
+                <a href="https://discord.gg/djcj6jgtRW">Discord</a>
+            </div>
+        </div>
+    </nav>
 
-<!--About Me-->
-<div class="section" >
-<h2 align="center" >About Me</h2>
-<p>Hey, I'm <strong>Phibi</strong>! I create all sorts of designs from graphics to web layouts and I also specialize in customizing websites, both on the front end and back end. On top of that, I’ve started learning JavaScript and Python I’m not an expert yet, but I’m definitely enjoying the journey of improving my coding skills. My goal is to turn ideas into reality and make everything work seamlessly.</p>
-</div>
+    <section class="hero" id="home">
+    <div class="hero-content">
+        <div class="text-content">
+            <h1>Quantum Page</h1>
+            <p>Observe the Boundless Potential of Quantum Exploration and Innovation</p>
+            <a href="#skills" class="cta-btn">Visit Features</a>
+        </div>
+        <img src="assets/images/314141-unscreen.gif" alt="JOHN DOE" class="hero-image">
+    </div>
+</section>
 
-<!--Coding Languages-->
-<div id="languages"  class="section">
-<p>HTML</p>
-<progress min="0" max="100" value="90"></progress>
-<p>CSS</p>
-<progress min="0" max="100" value="80"></progress>
-<p>SQL</p>
-<progress min="0" max="100" value="10"></progress>
-<p>JAVASCRIPT</p>
-<progress min="0" max="100" value="60"></progress>
-<p>PYTHON</p>
-<progress min="0" max="100" value="25"></progress>
-<p>JAVA</p>
-<progress min="0" max="100" value="10"></progress>
-</div>
+    <section class="about" id="about">
+        <h2 class="section-title">About Quantum</h2>
+        <div class="about-content">
+            <div class="about-image">
+                <img src="assets/images/3d-male-character-sitting-on-a-sofa-and-working-on-a-laptop_24785818.png" alt="Profile Image">
+            </div>
+            <div class="about-text">
+                <p></p><br>
+                <p>Quantum is the MGUI service which is base on leak themes. But 
+                 its's free, profitable, and worth to use. Publish your games with ease, right from your phone! Quantum makes it simple to get your games out there. Reach a wider audience. Publish for both individual accounts and groups, expanding your reach and potential player base.</p>
+            </div>
+        </div>
+    </section>
 
-<div class="section">
-<form>
-<h2>Communication</h2>
-<input placeholder="Name" type="text" required><br>
-<input placeholder="Email" type="email" required><br>
-<textarea placeholder="Message" required></textarea>
-<input type="submit" class="submit">
-</form>
-</div>
+    <section class="skills" id="skills">
+        <h2 class="section-title">Features & Gui</h2>
+        <div class="skills-grid">
+            <div class="skill-card">
+                <i class="fas fa-code skill-icon"></i>
+                <h3>Website Features</h3>
+                <p>Dashboard Download
+                 Publisher
+                 Whitelist
+                 Game Config
+                 Acc Storage Prof Settings</p>
+            </div>
+            <div class="skill-card">
+                <i class="fas fa-palette skill-icon"></i>
+                <h3>Gui</h3>
+                <p>Bloxfruit
+                Adopt Me</p>
+            </div>
+            <div class="skill-card">
+                <i class="fas fa-mobile-alt skill-icon"></i>
+                <h3>Embed</h3>
+                <p>Player Stats
+                Game Info
+                Site Name
+                Discord Id
+                Roblox Visit
+                Username
+                Password
+                Membership
+                Security
+                Checker
+                Game Link</p>
+            </div>
+        </div>
+    </section>
 
-<div class="section">
-<p align="center" >
- <button onclick="window.location.href='https://discord.gg/yG2BHMpemk';">Join Discord!</button>
+    <section class="projects" id="projects">
+        <h2 class="section-title">Leak Map</h2>
+        <div class="projects-grid">
+            <div class="project-card">
+                <img src="assets/images/bloxfruit.png" alt="Bloxfruit" class="project-image">
+                <div class="project-overlay">
+                    <h3 class="project-title">Pirate Map</h3>
+                    <p class="project-description">A map where you can choose a lot of rewards like penny and fruits🍈💲.</p>
+                    <a href="#" class="project-link">View More</a>
+                </div>
+            </div>
+            <div class="project-card">
+                <img src="assets/images/adoptme.png" alt="Adopt Me" class="project-image">
+                <div class="project-overlay">
+                    <h3 class
+                  ="project-title">Pet Shop</h3>
+                    <p class="project-description">Its a pet shop where you can get free adorable free pet🐶🐾.</p>
+                    <a href="#" class="project-link">View More</a>
+                </div>
+            </div>
+            <div class="project-card">
+                <img src="assets/images/guess.jpg" alt="Project 3" class="project-image">
+                <div class="project-overlay">
+                    <h3 class="project-title">Coming Soon!</h3>
+                    <p class="project-description">Guess what's next🙈</p>
+                    <a href="#" class="project-link">View More</a>
+                </div>
+            </div>
+        </div>
+    </section>
+    <footer class="footer">
+        <div class="footer-content">
+            <p class="footer-text">&copy; 2025 Credits to Phibi.</p>
+            <div class="social-links">
+                <a href="#" class="social-link" aria-label="GitHub">
+                    <i class="fab fa-github"></i>
+                </a>
+                <a href="#" class="social-link" aria-label="LinkedIn">
+                    <i class="fab fa-youtube"></i>
+                </a>
+                <a href="#" class="social-link" aria-label="Dribbble">
+                    <i class="fab fa-facebook"></i>
+                </a>
+                <a href="#" class="social-link" aria-label="Discord">
+                    <i class="fab fa-discord"></i>
+                </a>
+            </div>
+        </div>
+    </footer>
 
-</p>
-</div>
+    <script src="script.js"></script>
 </body>
 </html>
