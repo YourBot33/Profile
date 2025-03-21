@@ -1,0 +1,492 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Confess</title>
+    <style>
+        body {
+            font-family: "Roboto", sans-serif;
+            background: #121212;
+            color: white;
+            margin: 0;
+            padding: 0;
+            text-align: center;
+        }
+
+        /* Header Section */
+        #header {
+            background: #181818;
+            padding: 15px;
+            font-size: 20px;
+            font-weight: bold;
+        }
+
+        /* Cover Photo */
+        #cover-container {
+            width: 100%;
+            height: 180px;
+            background: url('/img/1739547189694.jpg') center/cover no-repeat;
+        }
+
+/* Profile Section */
+#profile-container {
+    padding: 70px 0 20px; /* Increased top padding to prevent overlap */
+    background: #1E1E1E;
+    text-align: center;
+    margin-top: -60px; /* Adjust to pull up */
+    position: relative;
+    border-radius: 10px;
+}
+
+/* Profile Picture */
+.profile-pic {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    border: 3px solid #1E1E1E;
+    position: absolute;
+    top: -60px; /* Adjust to overlap cover photo */
+    left: 50%;
+    transform: translateX(-50%);
+    background: white;
+}
+
+/* Username */
+.username {
+    font-size: 22px;
+    font-weight: bold;
+    margin-top: 10px; /* Adjusted spacing */
+    display: block;
+}
+
+/* Stats Section */
+.stats {
+    font-size: 14px;
+    color: #aaa;
+    margin-top: 5px;
+}
+
+.stats span {
+    color: white; /* Highlight count in white */
+    font-weight: bold;
+}
+
+        .btn {
+            display: inline-block;
+            padding: 10px 20px;
+            margin: 10px 5px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: 0.3s;
+        }
+
+        .follow-btn {
+            background: #1877F2;
+            color: white;
+            border: none;
+        }
+
+        .following {
+            background: #444;
+            color: white;
+        }
+
+        .message-btn {
+            background: #444;
+            color: white;
+            border: none;
+        }
+
+        /* Posts Section */
+        #chat-container {
+            max-width: 700px;
+            margin: auto;
+            padding: 15px;
+        }
+
+        .post {
+            background: #222;
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 15px;
+            text-align: left;
+        }
+
+        .post-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .small-pic {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            margin-right: 10px;
+        }
+
+        .post-username {
+            font-size: 16px;
+            font-weight: bold;
+        }
+
+        .post-time {
+            font-size: 12px;
+            color: #bbb;
+        }
+
+        .post-content {
+            font-size: 15px;
+            margin-bottom: 10px;
+        }
+
+        .reaction-buttons {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .reaction-btn {
+            background: none;
+            border: none;
+            color: #bbb;
+            font-size: 14px;
+            cursor: pointer;
+        }
+
+        .comment-section {
+            display: none;
+            margin-top: 10px;
+        }
+
+        .comment-input {
+            width: 70%;
+            padding: 10px;
+            background: #333;
+            color: white;
+            border: none;
+            border-radius: 5px;
+        }
+        .no-underline {
+  text-decoration: none;
+  display: inline-block;
+}
+.emoji-picker {
+  display: none;
+  position: absolute;
+  background: rgba(0, 0, 0, 0.8);
+  padding: 5px;
+  border-radius: 10px;
+  gap: 5px;
+  z-index: 10;
+}
+
+.emoji-picker button {
+  background: none;
+  border: none;
+  font-size: 20px;
+  cursor: pointer;
+}
+
+.reaction-counts {
+  margin-top: 5px;
+  font-size: 14px;
+  color: white;
+}
+    </style>
+</head>
+<body>
+
+
+    <!-- Cover Photo -->
+    <div id="cover-container"></div>
+
+    <!-- Profile Section -->
+    <div id="profile-container">
+        <img src="/img/tesst.jpeg" class="profile-pic">
+        <div class="username">Sho Ku 󰦉</div>
+       <div class="stats">
+  <span id="follower-count">498</span> followers •
+  <span id="following-count">288</span> following
+</div>
+        <button class="btn follow-btn" id="followBtn" onclick="toggleFollow()">+ Follow</button>
+    <a href="fb-messenger://user-thread/100084911114022" class="btn message-btn no-underline">Message</a>
+    </div>
+
+    <!-- Posts Section -->
+    <div id="chat-container"></div>
+
+    <!-- Firebase Scripts -->
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-database-compat.js"></script>
+    <script>
+        const firebaseConfig = {
+            apiKey: "AIzaSyChvansNoJLJ5CGI1a7dwqbD8zj1RPz75Q",
+            authDomain: "offline-chat-app-a50ef.firebaseapp.com",
+            projectId: "offline-chat-app-a50ef",
+            databaseURL: "https://offline-chat-app-a50ef-default-rtdb.firebaseio.com/",
+            messagingSenderId: "183190793649",
+            appId: "1:183190793649:android:e81f98e0b2e8f562272190",
+        };
+
+        const app = firebase.initializeApp(firebaseConfig);
+        const database = firebase.database();
+        const messagesRef = database.ref('messages');
+
+        function formatDate(timestamp) {
+            const date = new Date(timestamp);
+            return date.toLocaleString('en-US', { 
+                month: 'long', day: 'numeric', year: 'numeric', 
+                hour: 'numeric', minute: 'numeric', hour12: true 
+            });
+        }
+function displayMessages(snapshot) {
+  const container = document.getElementById('chat-container');
+  container.innerHTML = "";
+  
+  snapshot.forEach((childSnapshot) => {
+    const key = childSnapshot.key;
+    const messageData = childSnapshot.val();
+    
+    const postDiv = document.createElement('div');
+    postDiv.classList.add('post');
+    
+    postDiv.innerHTML = `
+            <div class="post-header">
+                <img src="${messageData.profilePic || '/img/Picsart_24-12-04_17-20-39-417.png'}" class="small-pic">
+                <div>
+                    <div class="post-username">${messageData.username || 'Glenn Sam Evangelio'}</div>
+                    <div class="post-time">${formatDate(messageData.timestamp)}</div>
+                </div>
+            </div>
+
+            <div class="post-content">${messageData.text}</div>
+
+            <div class="reaction-buttons">
+                <button class="reaction-btn" id="reaction-btn-${key}" onmousedown="showReactions('${key}')">Like</button>
+                <div id="reaction-counts-${key}" class="reaction-counts"></div>
+
+                <div class="emoji-picker" id="emoji-picker-${key}">
+                    <button onclick="addReaction('${key}', '')"></button>
+                    <button onclick="addReaction('${key}', '😆')">😆</button>
+                    <button onclick="addReaction('${key}', '💋')">💋</button>
+                    <button onclick="addReaction('${key}', '💝')">💝</button>
+                    <button onclick="addReaction('${key}', '🥹')">🥹</button>
+                    <button onclick="addReaction('${key}', '🙈')">🙈</button>
+                    <button onclick="addReaction('${key}', '😋')">😋</button>
+                </div>
+
+                <button class="reaction-btn" onclick="toggleCommentSection('${key}')">💬 Comment</button>
+                <span id="comment-count-${key}">0</span>
+            </div>
+
+            <div class="comment-section" id="comment-section-${key}" style="display: none;">
+                <input id="comment-input-${key}" class="comment-input" placeholder="Write a comment...">
+                <button onclick="addComment('${key}')">Send</button>
+                <div id="comments-${key}">No comments yet.</div>
+            </div>
+        `;
+    
+    container.appendChild(postDiv);
+    
+    function loadReactions(postId) {
+  const reactionsRef = messagesRef.child(postId).child("reactions");
+  const reactionCountsDiv = document.getElementById(`reaction-counts-${postId}`);
+  
+  reactionsRef.on("value", snapshot => {
+    reactionCountsDiv.innerHTML = ""; // Clear previous counts
+    
+    if (!snapshot.exists()) return;
+    
+    snapshot.forEach(childSnapshot => {
+      const emoji = childSnapshot.key;
+      const count = childSnapshot.val();
+      reactionCountsDiv.innerHTML += `<span>${emoji} ${count}</span> `;
+    });
+  });
+}
+    loadComments(key); // Load previous comments
+  });
+}
+
+// Show emoji picker on long press
+function showReactions(postId) {
+  document.getElementById(`emoji-picker-${postId}`).style.display = "flex";
+}
+
+// Hide emoji picker after selection
+function hideReactions(postId) {
+  document.getElementById(`emoji-picker-${postId}`).style.display = "none";
+}
+
+// Add reaction and update the count separately for each emoji
+function addReaction(postId, emoji) {
+  document.getElementById(`reaction-btn-${postId}`).innerText = emoji;
+  hideReactions(postId); // Hide emoji picker
+  
+  let reactions = JSON.parse(localStorage.getItem(`reactions-${postId}`)) || {};
+  reactions[emoji] = (reactions[emoji] || 0) + 1;
+  
+  localStorage.setItem(`reactions-${postId}`, JSON.stringify(reactions));
+  updateReactionCount(postId, reactions);
+}
+
+// Update reaction counts
+function updateReactionCount(postId, reactions) {
+  const reactionCountsDiv = document.getElementById(`reaction-counts-${postId}`);
+  reactionCountsDiv.innerHTML = "";
+  
+  Object.keys(reactions).forEach(emoji => {
+    if (reactions[emoji] > 0) {
+      reactionCountsDiv.innerHTML += `<span>${emoji} ${reactions[emoji]}</span> `;
+    }
+  });
+}
+
+// Load saved reactions when the page loads
+function loadReactions(postId) {
+  let reactions = JSON.parse(localStorage.getItem(`reactions-${postId}`)) || {};
+  updateReactionCount(postId, reactions);
+}
+
+// Toggle comment section
+function toggleCommentSection(postId) {
+  const section = document.getElementById(`comment-section-${postId}`);
+  section.style.display = section.style.display === "none" ? "block" : "none";
+  
+  if (section.style.display === "block") {
+    loadComments(postId); // Load comments when opening the section
+  }
+}
+
+// Add comment to the post
+function addComment(postId) {
+  const commentInput = document.getElementById(`comment-input-${postId}`);
+  const commentText = commentInput.value.trim();
+  
+  if (commentText === "") {
+    alert("Comment cannot be empty!");
+    return;
+  }
+  
+  const commentsRef = messagesRef.child(postId).child("comments");
+  const newCommentRef = commentsRef.push();
+  
+  newCommentRef.set({
+    text: commentText,
+    timestamp: Date.now()
+  }).then(() => {
+    commentInput.value = ""; // Clear input after sending
+    updateCommentCount(postId); // Update the count
+    loadComments(postId); // Refresh comments after adding
+  }).catch(error => {
+    console.error("Error adding comment:", error);
+  });
+}
+
+// Load comments for a post
+function loadComments(postId) {
+  const commentsRef = messagesRef.child(postId).child("comments");
+  const commentsContainer = document.getElementById(`comments-${postId}`);
+  
+  commentsRef.on("value", snapshot => {
+    commentsContainer.innerHTML = ""; // Clear previous comments
+    
+    if (!snapshot.exists()) {
+      commentsContainer.innerHTML = "No comments yet.";
+      return;
+    }
+    
+    snapshot.forEach(childSnapshot => {
+      const commentData = childSnapshot.val();
+      const commentDiv = document.createElement("div");
+      commentDiv.style.color = "white"; // Make text visible
+      commentDiv.style.marginTop = "5px";
+      
+      commentDiv.innerHTML = `
+                <div style="font-size: 12px; color: #bbb;">${new Date(commentData.timestamp).toLocaleString()}</div>
+                <div>${commentData.text}</div>
+            `;
+      
+      commentsContainer.appendChild(commentDiv);
+    });
+    
+    // Update comment count
+    updateCommentCount(postId);
+  });
+}
+
+// Update comment count
+function updateCommentCount(postId) {
+  const commentsRef = messagesRef.child(postId).child("comments");
+  const commentCountElement = document.getElementById(`comment-count-${postId}`);
+  
+  commentsRef.once("value", snapshot => {
+    const count = snapshot.numChildren();
+    commentCountElement.innerText = count; // Update the count
+  });
+}
+
+    const userId = "glenn_sam"; // Profile owner
+const currentUser = "user_123"; // Logged-in user ID
+const followersRef = database.ref(`users/${userId}/followers`);
+
+function toggleFollow() {
+  let followBtn = document.getElementById('followBtn');
+  let followerCount = document.getElementById('follower-count');
+  
+  followBtn.disabled = true; // Prevent multiple taps
+  
+  followersRef.once("value", snapshot => {
+    let followers = snapshot.val() || {};
+    
+    if (followers[currentUser]) {
+      // Unfollow (Remove the user from followers list)
+      followersRef.child(currentUser).remove().then(() => {
+        followBtn.innerText = "Follow";
+        followBtn.classList.remove("following");
+        followBtn.disabled = false; // Re-enable the button for refollowing
+        updateFollowerCount();
+      });
+    } else {
+      // Follow
+      followersRef.child(currentUser).set(true).then(() => {
+        followBtn.innerText = "Following";
+        followBtn.classList.add("following");
+        followBtn.disabled = true; // Disable after following
+        updateFollowerCount();
+      });
+    }
+  });
+}
+
+// Fetch and update the follower count in real-time
+function updateFollowerCount() {
+  followersRef.on("value", snapshot => {
+    let followers = snapshot.val();
+    let count = followers ? Object.keys(followers).length : 0;
+    document.getElementById("follower-count").innerText = count;
+    
+    let followBtn = document.getElementById('followBtn');
+    
+    if (followers && followers[currentUser]) {
+      followBtn.innerText = "Following";
+      followBtn.classList.add("following");
+      followBtn.disabled = false; // Enable to allow unfollowing
+    } else {
+      followBtn.innerText = "Follow";
+      followBtn.classList.remove("following");
+      followBtn.disabled = false; // Enable for following
+    }
+  });
+}
+
+// Initialize follower count and button state
+updateFollowerCount();
+        messagesRef.on('value', displayMessages);
+    </script>
+
+</body>
+</html>
